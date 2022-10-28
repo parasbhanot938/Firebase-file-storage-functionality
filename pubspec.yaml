@@ -37,6 +37,7 @@ dependencies:
   firebase_core:
   firebase_storage:
   image_picker:
+  firebase_dynamic_links:
 
 dev_dependencies:
   flutter_test:

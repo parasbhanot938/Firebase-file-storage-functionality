@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   int _counter = 0;
 
   File? image;
@@ -85,8 +86,26 @@ class _MyHomePageState extends State<MyHomePage> {
      }
    });
   }
-
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
   @override
+  void initState() {
+    super.initState();
+    initDynamicLinks();
+  }
+
+  Future<void> initDynamicLinks() async {
+    dynamicLinks.onLink.listen((dynamicLinkData) {
+      log(dynamicLinkData.link.path.toString());
+      log(dynamicLinkData.link.toString());
+    }).onError((error) {
+      print('onLink error');
+      print(error.message);
+    });
+  }
+
+
+
+      @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
